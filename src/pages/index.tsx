@@ -1,3 +1,6 @@
+import { Card } from "@/components/Card";
+
+
 
 let foo=123;
 let fooo:number=243
@@ -58,13 +61,20 @@ type bar={
 type foobar=foo & bar;
 
 
-
 export default function Home() {
+  const object={
+    user:{
+      name:'ken'
+    }
+  }
+  const myObject = { name: 'John', age: 30, location: 'New York' };
+  const analytics=[12,24,53]
   return (
     <>
+      <Card {...myObject } hi={'hi'} analytics={analytics} jiji={'jiji'} {...object}/>
       <div className='text-3xl'>{foo}あれ</div>
       <p>{fooo}</p>
-      <p>{voo}</p>
+      <p className="text-xs">{voo}</p>
       <p className="text-red-500">ん</p>
     </>
   )

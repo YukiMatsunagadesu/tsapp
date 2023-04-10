@@ -60,6 +60,59 @@ type bar={
 }
 type foobar=foo & bar;
 
+//typeof
+let fnei:string;
+type fofeo=typeof fnei;
+
+type obj={
+  foo:string;
+  bar:number;
+};
+type key=keyof obj
+const key:key="foo" //fooかbarのユニオン型
+
+//ダウンキャスト
+const theme={
+  color:"red" as const, //as "red"でもいいね
+}
+
+let x = "hello"; // 文字列リテラル
+x = "hello world"; // 文字列型として推論される
+
+//nonnullassertion
+function fobgeio(str: string | null): number {
+  return str!.length;
+}
+
+
+//mappedtypesまとめ
+type User={
+  name:string;
+}&Data
+
+type Data={
+  // height:number;
+  // weight:number;
+  [k in'height'|'weight']:number;
+}
+
+const user:User={
+  name:'nana',
+  height:222,
+  weight:433,
+}
+//type作って[k in keyof foo]:numberとかで他の方参照してできる
+
+//タグ付きユニオンタイプスを利用した型ガード
+type Shape = { kind: "circle", radius: number } | { kind: "square", sideLength: number };
+function getArea(shape: Shape): number {
+  if (shape.kind === "circle") {
+    return Math.PI * shape.radius ** 2;
+  } else {
+    return shape.sideLength ** 2;
+  }
+}
+
 
 export default function Home() {
   const object={
@@ -79,3 +132,5 @@ export default function Home() {
     </>
   )
 }
+
+

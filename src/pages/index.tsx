@@ -102,6 +102,18 @@ const user:User={
   weight:433,
 }
 //type作って[k in keyof foo]:numberとかで他の方参照してできる
+type Person = {
+  name: string;
+  age: number;
+};
+
+type PersonOptional = {
+  [P in keyof Person]?: Person[P];
+};
+
+const personOptional: PersonOptional = {
+  name: 'Alice',
+};
 
 //タグ付きユニオンタイプスを利用した型ガード
 type Shape = { kind: "circle", radius: number } | { kind: "square", sideLength: number };
@@ -112,7 +124,169 @@ function getArea(shape: Shape): number {
     return shape.sideLength ** 2;
   }
 }
+// エラーになる
+// function aded(a: number | string, b: number | string) {
+//   return a + b;
+// }
 
+// 型ガード
+function addd(a: number | string, b: number | string) {
+  if (typeof a === 'number' && typeof b === 'number') {
+    return a + b;
+  } else {
+    return a.toString() + b.toString();
+  }
+}
+
+console.log(addd(1, 2)); 
+console.log(addd('Hello', 'World'));
+console.log(addd(1, 'Hello')); 
+
+
+console.log(addd(1, 2)); 
+console.log(addd('Hello', 'World')); 
+console.log(addd(1, 'Hello')); 
+
+//ユーザー定義の型ガード
+interface Pedrson {
+  name: string;
+  age: number;
+}
+
+function isPerson(obj: any): obj is Pedrson {
+  return obj && typeof obj.name === 'string' && typeof obj.age === 'number';
+}
+
+function greet(person: Pedrson | string) {
+  if (isPerson(person)) {
+    console.log(`Hello, ${person.name}!`);
+  } else {
+    console.log(`Hello, ${person}!`);
+  }
+}
+
+greet({ name: 'Alice', age: 25 }); // "Hello, Alice!"
+greet('Bob'); // "Hello, Bob!"
+
+//utilitytypes色々
+//partial
+type Persons = {
+  name: string;
+  age: number;
+  job: string;
+};
+
+type PartialPerson = Partial<Persons>;
+
+const partialPerson: PartialPerson = {
+  name: "ngoe"
+};
+
+//required
+type OptionalPerson = {
+  name?: string;
+  age?: number;
+  job?: string;
+};
+
+type RequiredPerson = Required<OptionalPerson>;
+
+const requiredPerson: RequiredPerson = {
+  name: "Bob",
+  age: 25,
+  job: "Engineer"
+};
+//readonly
+type MutablePerson = {
+  name: string;
+  age: number;
+  job: string;
+};
+
+type ReadonlyPerson = Readonly<MutablePerson>;
+
+const readonlyPerson: ReadonlyPerson = {
+  name: "Charlie",
+  age: 30,
+  job: "Designer"
+};
+// readonlyPerson.age=34
+
+//record
+type Key = "foo" | "bar" | "baz";
+type Value = number;
+
+type RecordType = Record<Key, Value>;
+
+const record: RecordType = {
+  foo: 1,
+  bar: 2,
+  baz: 3
+};
+
+//pick
+type pickPerson = {
+  name: string;
+  age: number;
+  job: string;
+};
+
+type NameAndJob = Pick<pickPerson, "name" | "job">;
+
+const nameAndJob: NameAndJob = {
+  name: "Alice",
+  job: "Engineer"
+};
+
+//returntype
+function getUser(id: number): { name: string; age: number } {
+  return { name: "Alice", age: 20 };
+}
+
+type ReturnGetUser = ReturnType<typeof getUser>;
+
+const userd: ReturnGetUser = { name: "Bob", age: 25 };
+
+//omit
+type Personc = {
+  name: string;
+  age: number;
+  job: string;
+};
+
+type PersonWithoutJob = Omit<Personc, "job">;
+
+const personWithoutJob: PersonWithoutJob = {
+  name: "Alice",
+  age: 20
+};
+
+//extract
+type Persone = {
+  name: string;
+  age: number;
+};
+
+type Employee = {
+  name: string;
+  age: number;
+  job: string;
+};
+
+type CommonProps = Extract<keyof Persone, keyof Employee>;
+
+const commonProps: CommonProps = "name";
+
+//exclude
+type fgine=Exclude<string|number,string>
+
+
+//parameters型 
+// (引数tupleで取得)
+function foocsc(a:string,b:number[],c:boolean){
+  return;
+}
+type focwo=Parameters<typeof foocsc>
 
 export default function Home() {
   const object={
